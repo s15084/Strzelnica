@@ -26,6 +26,15 @@
         <!-- Enable Hibernate stats in the logs -->
         <property name="hibernate.generate_statistics">false</property>
 
+        <mapping class="model.FlatBarrelWeapon"/>
+        <mapping class="model.MachineWeapon"/>
+        <mapping class="model.ShootingTrack"/>
+        <mapping class="model.ShootingTrackDomain"/>
+        <mapping class="model.ShortWeapon"/>
+        <mapping class="model.TechnicalReview"/>
+        <mapping class="model.Weapon"/>
+        <mapping class="model.WeaponOvershoot"/>
+
 
     </session-factory>
 </hibernate-configuration>

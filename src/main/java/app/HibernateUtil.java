@@ -1,4 +1,4 @@
-package application;
+package app;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
