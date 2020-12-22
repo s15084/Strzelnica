@@ -11,8 +11,8 @@ public class FlatBarrelWeapon extends Weapon {
     public FlatBarrelWeapon() {
     }
 
-    public FlatBarrelWeapon(String name, double caliber, double barrelLength, String ammoType, weapon_Condition condition, boolean isDoubleBarreled) {
-        super(name, caliber, barrelLength, ammoType);
+    public FlatBarrelWeapon(int serialNumber, String name, double caliber, double barrelLength, String ammoType, weapon_Condition condition, boolean isDoubleBarreled) {
+        super(serialNumber, name, caliber, barrelLength, ammoType);
         this.isDoubleBarreled = isDoubleBarreled();
     }
 

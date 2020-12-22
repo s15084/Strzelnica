@@ -1,7 +1,4 @@
-import app.AddTechnicalReviewController;
-import app.TechnicalReviewController;
-import app.WeaponController;
-import app.WeaponOvershootController;
+import app.*;
 import javafx.application.Application;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
@@ -101,7 +98,7 @@ public class Main extends Application {
 
                 if(!empty || item!=null){
                     if(item instanceof ShortWeapon){
-                        setText("Broń krótka " +item.getCaliber() + " mm | " +((ShortWeapon)item).getClipCapacity() + " " + item.getWeaponCondition());
+                        setText("Broń krótka | " + item.getName() + " | SN: " + item.getSerialNumber());
                     }
                     else if(item instanceof MachineWeapon){
                         setText("Broń maszynowa " +item.getCaliber() + " mm | " +((MachineWeapon)item).getClipCapacity() + " " + item.getWeaponCondition());
@@ -129,8 +126,6 @@ public class Main extends Application {
             }
         });
 
-        //TODO znaleźć błąd - nieotwierające sie okno
-
         newWeaponOverviewButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -155,6 +150,42 @@ public class Main extends Application {
                             @Override
                             public void handle(WindowEvent event) {
                                 populateTechnicalReviewsTable(chosenWeapon.getTechnicalReviews());
+                            }
+                        });
+
+                    }
+                }catch(Exception e){
+                    System.out.println("Błąd");
+
+                }
+
+            }
+        });
+
+        newWeaponOvershootButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    if(weaponsListView.getSelectionModel().getSelectedItem() == null){
+                        System.out.println("Wybierz broń z listy");
+                    }else {
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("addOvershoot.fxml"));
+                        Parent root2 = (Parent) fxmlLoader.load();
+                        Weapon chosenWeapon = weaponsListView.getSelectionModel().getSelectedItem();
+                        AddWeaponOvershootController addWeaponOvershootController = fxmlLoader.getController();
+                        addWeaponOvershootController.setWeapon(chosenWeapon);
+
+                        Stage stage = new Stage();
+                        stage.setTitle("Nowe przystrzelenie");
+                        stage.setScene(new Scene(root2));
+                        stage.setResizable(false);
+                        stage.show();
+
+                        //Ustawienie odsiwezenia
+                        stage.setOnHidden(new EventHandler<WindowEvent>() {
+                            @Override
+                            public void handle(WindowEvent event) {
+                                populateWeaponOvershootsTable(chosenWeapon.getWeaponOvershoots());
                             }
                         });
 
@@ -194,7 +225,7 @@ public class Main extends Application {
                 boolean isFirstFault = true;
                 for(String fault : param.getValue().getFaults()){
                     if(!isFirstFault){
-                        fault += ",";
+                        faults += "\n";
                     }
                     isFirstFault = false;
                     faults += fault;
@@ -250,29 +281,7 @@ public class Main extends Application {
 
 
     private void addExamples(){
-        technicalReviewController.addTechnicalReview(new TechnicalReview(LocalDate.parse("2020-12-22")));
-        technicalReviewController.addTechnicalReview(new TechnicalReview(LocalDate.parse("2020-12-21")));
-        technicalReviewController.getAllTechnicalReviews().forEach(x -> System.out.println(x));
-
-        weaponOvershootController.addWeaponOvershoot(new WeaponOvershoot(LocalDate.parse("2020-12-20")));
-        weaponOvershootController.getAllWeaponOvershoots().forEach(x -> System.out.println(x));
-
-        TechnicalReview technicalReview1 = new TechnicalReview(LocalDate.parse("2020-12-19"));
-        technicalReview1.setComment("Trzeba wyczyścić");
-        List<String> lista = new ArrayList<>();
-        lista.add("A");
-        lista.add("B");
-        technicalReview1.setFaults(lista);
-
-        WeaponOvershoot weaponOvershoot1 = new WeaponOvershoot(LocalDate.parse("2020-12-21"));
-
-
-
-        ShortWeapon shortWeapon = new ShortWeapon("Glock", 8.0, 8.0,"gładka",Weapon.weapon_Condition.SPRAWNA,10);
-        shortWeapon.addTechnicalReview(technicalReview1);
-        shortWeapon.addWeaponOvershoot(weaponOvershoot1);
+        ShortWeapon shortWeapon = new ShortWeapon(58473847,"Glock", 8.0, 8.0,"gładka",Weapon.weapon_Condition.SPRAWNA,10);
         weaponController.addWeapon(shortWeapon);
-        shortWeapon.getTechnicalReviews().forEach(x -> System.out.println(x));
-        shortWeapon.getWeaponOvershoots().forEach(x -> System.out.println(x));
     }
 }

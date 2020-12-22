@@ -16,6 +16,7 @@ public abstract class Weapon {
     @GenericGenerator(name = "increment", strategy = "increment")
     private long id;
 
+    private int serialNumber;
     private String name;
     private double caliber;
     private double barrelLength;
@@ -77,7 +78,8 @@ public abstract class Weapon {
     public Weapon() {
     }
 
-    public Weapon(String name, double caliber, double barrelLength, String ammoType) {
+    public Weapon(int serialNumber, String name, double caliber, double barrelLength, String ammoType) {
+        this.serialNumber = serialNumber;
         this.name = name;
         this.caliber = caliber;
         this.barrelLength = barrelLength;
@@ -92,8 +94,16 @@ public abstract class Weapon {
         return id;
     }
 
-    public void setId(long serialNumber) {
-        this.id = serialNumber;
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public int getSerialNumber() {
+        return serialNumber;
+    }
+
+    public void setSerialNumber(int serialNumber) {
+        this.serialNumber = serialNumber;
     }
 
     public String getName() {
@@ -166,17 +176,15 @@ public abstract class Weapon {
     @Override
     public String toString() {
         return "Weapon{" +
-                "serialNumber=" + id +
+                "id=" + id +
+                ", serialNumber=" + serialNumber +
                 ", name='" + name + '\'' +
                 ", caliber=" + caliber +
                 ", barrelLength=" + barrelLength +
                 ", ammoType='" + ammoType + '\'' +
-                ", condition=" + weaponCondition +
+                ", weaponCondition=" + weaponCondition +
                 '}';
     }
 }
-
-
-//stany techniczne broni
 
 

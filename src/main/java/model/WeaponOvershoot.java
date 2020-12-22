@@ -1,9 +1,9 @@
 package model;
 
+import javafx.collections.ObservableList;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
 import java.time.LocalDate;
 
 @Entity
@@ -42,7 +42,7 @@ public class WeaponOvershoot {
         this.overshootDate = overshootDate;
     }
 
-    public overshoot_Result getOvershootResult() {
+    public overshoot_Result getOvershootResult(ObservableList<String> overshootPickedResult) {
         return overshootResult;
     }
 

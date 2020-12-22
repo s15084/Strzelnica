@@ -50,13 +50,15 @@ public class AddTechnicalReviewController implements Initializable {
         this.weapon = weapon;
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+        @Override
+        public void initialize(URL location, ResourceBundle resources) {
         reviewCommentTextArea.setWrapText(true);
         faultsList = FXCollections.observableArrayList();
         faultsListView.setItems(faultsList);
         addListener();
     }
+
+
 
     private void addListener(){
 
@@ -93,5 +95,9 @@ public class AddTechnicalReviewController implements Initializable {
             }
         });
     }
+
+
+
+
 
 }

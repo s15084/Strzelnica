@@ -48,6 +48,14 @@ import java.util.List;
         this.phoneNumber = phoneNumber;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public String getFirstName() {
         return firstName;
     }

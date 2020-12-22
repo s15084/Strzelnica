@@ -10,8 +10,8 @@ public class MachineWeapon extends Weapon {
     public MachineWeapon() {
     }
 
-    public MachineWeapon(String name, double caliber, double barrelLength, String ammoType, weapon_Condition condition, int clipCapacity) {
-        super(name, caliber, barrelLength, ammoType);
+    public MachineWeapon(int serialNumber, String name, double caliber, double barrelLength, String ammoType, weapon_Condition condition, int clipCapacity) {
+        super(serialNumber, name, caliber, barrelLength, ammoType);
         this.clipCapacity = clipCapacity;
     }
 

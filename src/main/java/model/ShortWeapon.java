@@ -10,8 +10,8 @@ public class ShortWeapon extends Weapon {
     public ShortWeapon() {
     }
 
-    public ShortWeapon(String name, double caliber, double barrelLength, String ammoType, weapon_Condition condition, int clipCapacity) {
-        super(name, caliber, barrelLength, ammoType);
+    public ShortWeapon(int serialNumber, String name, double caliber, double barrelLength, String ammoType, weapon_Condition condition, int clipCapacity) {
+        super(serialNumber, name, caliber, barrelLength, ammoType);
         this.clipCapacity = clipCapacity;
     }
 
