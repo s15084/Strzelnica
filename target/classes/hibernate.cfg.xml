@@ -25,6 +25,7 @@
         <property name="hbm2ddl.auto">create</property>
         <!-- Enable Hibernate stats in the logs -->
         <property name="hibernate.generate_statistics">false</property>
+        <property name="hibernate.enable_lazy_load_no_trans">true</property>
 
         <mapping class="model.FlatBarrelWeapon"/>
         <mapping class="model.MachineWeapon"/>

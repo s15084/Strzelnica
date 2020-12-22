@@ -16,7 +16,6 @@ public abstract class Weapon {
     @GenericGenerator(name = "increment", strategy = "increment")
     private long id;
 
-    private int serialNumber;
     private String name;
     private double caliber;
     private double barrelLength;
@@ -78,7 +77,7 @@ public abstract class Weapon {
     public Weapon() {
     }
 
-    public Weapon(String name, double caliber, double barrelLength, String ammoType, weapon_Condition weaponCondition) {
+    public Weapon(String name, double caliber, double barrelLength, String ammoType) {
         this.name = name;
         this.caliber = caliber;
         this.barrelLength = barrelLength;
@@ -87,20 +86,14 @@ public abstract class Weapon {
     }
 
 
+
+
     public long getId() {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public long getSerialNumber() {
-        return serialNumber;
-    }
-
-    public void setSerialNumber(int serialNumber) {
-        this.serialNumber = serialNumber;
+    public void setId(long serialNumber) {
+        this.id = serialNumber;
     }
 
     public String getName() {
@@ -143,6 +136,7 @@ public abstract class Weapon {
         this.technicalReviews = technicalReviews;
     }
 
+
     public List<WeaponOvershoot> getWeaponOvershoots() {
         return weaponOvershoots;
     }
@@ -172,7 +166,7 @@ public abstract class Weapon {
     @Override
     public String toString() {
         return "Weapon{" +
-                "serialNumber=" + serialNumber +
+                "serialNumber=" + id +
                 ", name='" + name + '\'' +
                 ", caliber=" + caliber +
                 ", barrelLength=" + barrelLength +

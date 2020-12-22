@@ -49,6 +49,7 @@ public class TechnicalReview {
         this.comment = comment;
     }
 
+
     public List<String> getFaults() {
         return faults;
     }
@@ -56,6 +57,7 @@ public class TechnicalReview {
     public void setFaults(List<String> faults) {
         this.faults = faults;
     }
+
 
     public Weapon getWeapon() {
         return weapon;
@@ -76,13 +78,19 @@ public class TechnicalReview {
         this.weapon = null;
     }
 
+    @Transient
+    public LocalDate getNextReviewDate(){
+        return reviewDate.plusYears(1);
+    }
+
+
     @Override
     public String toString() {
         return "TechnicalReview{" +
-                "reviewDate=" + reviewDate +
+                "id=" + id +
+                ", reviewDate=" + reviewDate +
                 ", comment='" + comment + '\'' +
-                ", faults=" + faults +
-                ", weapon=" + weapon +
+                ", weapon=" + this.weapon + '\'' +
                 '}';
     }
 }

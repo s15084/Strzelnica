@@ -12,7 +12,7 @@ public class FlatBarrelWeapon extends Weapon {
     }
 
     public FlatBarrelWeapon(String name, double caliber, double barrelLength, String ammoType, weapon_Condition condition, boolean isDoubleBarreled) {
-        super(name, caliber, barrelLength, ammoType, condition);
+        super(name, caliber, barrelLength, ammoType);
         this.isDoubleBarreled = isDoubleBarreled();
     }
 

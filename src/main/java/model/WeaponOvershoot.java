@@ -1,12 +1,10 @@
 package model;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.GenericGenerators;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 public class WeaponOvershoot {
@@ -32,11 +30,8 @@ public class WeaponOvershoot {
     public WeaponOvershoot() {
     }
 
-    public WeaponOvershoot(LocalDate overshootDate, overshoot_Result overshootResult, String comment) {
+    public WeaponOvershoot(LocalDate overshootDate) {
         this.overshootDate = overshootDate;
-        this.overshootResult = overshootResult;
-        this.comment = comment;
-
     }
 
     public LocalDate getOvershootDate() {
@@ -63,17 +58,40 @@ public class WeaponOvershoot {
         this.comment = comment;
     }
 
+
+
     public Weapon getWeapon() {
         return weapon;
     }
 
     public void setWeapon(Weapon weapon) {
-        weapon.addWeaponOvershoot(this);
-        this.weapon = weapon;
+        if(this.weapon == null){
+            this.weapon = weapon;
+            this.weapon.addWeaponOvershoot(this);
+        } else if(this.weapon != weapon){
+            removeWeapon();
+            setWeapon(weapon);
+        }
     }
 
     public void removeWeapon(){
         this.weapon.removeWeaponOvershoot(this);
         this.weapon = null;
+    }
+
+    @Transient
+    public LocalDate getNextOvershootDate(){
+        return overshootDate.plusYears(1);
+    }
+
+    @Override
+    public String toString() {
+        return "WeaponOvershoot{" +
+                "id=" + id +
+                ", overshootDate=" + overshootDate +
+                ", overshootResult=" + overshootResult +
+                ", comment='" + comment + '\'' +
+                ", weapon=" + this.weapon + '\'' +
+                '}';
     }
 }

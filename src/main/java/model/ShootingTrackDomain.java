@@ -39,6 +39,7 @@ public class ShootingTrackDomain {
         }
     }
 
+
     public domain_Name getDomainName() {
         return domainName;
     }

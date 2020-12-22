@@ -63,6 +63,15 @@ public class ShootingTrack {
         }
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+
     public int getTrackNumber() {
         return trackNumber;
     }
@@ -109,13 +118,5 @@ public class ShootingTrack {
 
     public void setShootingTrackDomain(ShootingTrackDomain shootingTrackDomain) {
         this.shootingTrackDomain = shootingTrackDomain;
-    }
-
-    public List<Weapon> getWeapon() {
-        return weapon;
-    }
-
-    public void setWeapon(List<Weapon> weapon) {
-        this.weapon = weapon;
     }
 }

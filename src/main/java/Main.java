@@ -1,19 +1,28 @@
+import app.AddTechnicalReviewController;
+import app.TechnicalReviewController;
 import app.WeaponController;
+import app.WeaponOvershootController;
 import javafx.application.Application;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+import javafx.util.Callback;
 import model.*;
 
+import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Main extends Application {
@@ -24,7 +33,7 @@ public class Main extends Application {
 
     //tabela przeglądów technicznych
     @FXML
-    private TableView<TechnicalReview> weaponOverviewTableView;
+    private TableView<TechnicalReview> technicalReviewTableView;
     @FXML
     private TableColumn reviewDate;
     @FXML
@@ -36,15 +45,37 @@ public class Main extends Application {
 
 
     //tabela przystrzeleń
-            /*...*/
+    @FXML
+    private TableView<WeaponOvershoot> weaponOvershootTableView;
+    @FXML
+    private TableColumn overshootDate;
+    @FXML
+    private TableColumn<WeaponOvershoot, LocalDate> nextOvershootDate;
+    @FXML
+    private TableColumn<WeaponOvershoot, WeaponOvershoot.overshoot_Result> overshootResult;
+    @FXML
+    private TableColumn<WeaponOvershoot, String> comment2;
 
     //przyciski
-            /*...*/
+    @FXML
+    private Button newWeaponOverviewButton;
+    @FXML
+    private Button newWeaponOvershootButton;
+    @FXML
+    private Button sellTicketButton;
+
 
     //kontrolery
     private WeaponController weaponController = new WeaponController();
-            /*...*/
+    private TechnicalReviewController technicalReviewController = new TechnicalReviewController();
+    private WeaponOvershootController weaponOvershootController = new WeaponOvershootController();
 
+    public static void main(String [] args){
+
+        Main main = new Main();
+        main.addExamples();
+        launch(args);
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -89,24 +120,159 @@ public class Main extends Application {
             @Override
             public void handle(MouseEvent event) {
                 if(event.getClickCount() == 2 && weaponsListView.getSelectionModel().getSelectedItem() != null){
-                  Weapon selectedWeapon = weaponsListView
-                        .getSelectionModel()
-                        .getSelectedItem();
-                  /* .... */
+                    Weapon selectedWeapon = weaponsListView
+                            .getSelectionModel()
+                            .getSelectedItem();
+                    populateTechnicalReviewsTable(selectedWeapon.getTechnicalReviews());
+                    populateWeaponOvershootsTable(selectedWeapon.getWeaponOvershoots());
                 }
+            }
+        });
+
+        //TODO znaleźć błąd - nieotwierające sie okno
+
+        newWeaponOverviewButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    if(weaponsListView.getSelectionModel().getSelectedItem() == null){
+                        System.out.println("Wybierz broń z listy");
+                    }else {
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("addReview.fxml"));
+                        Parent root1 = (Parent) fxmlLoader.load();
+                        Weapon chosenWeapon = weaponsListView.getSelectionModel().getSelectedItem();
+                        AddTechnicalReviewController addTechnicalReviewController = fxmlLoader.getController();
+                        addTechnicalReviewController.setWeapon(chosenWeapon);
+
+                        Stage stage = new Stage();
+                        stage.setTitle("Nowy przegląd techniczny");
+                        stage.setScene(new Scene(root1));
+                        stage.setResizable(false);
+                        stage.show();
+
+                        //Ustawienie odsiwezenia
+                        stage.setOnHidden(new EventHandler<WindowEvent>() {
+                            @Override
+                            public void handle(WindowEvent event) {
+                                populateTechnicalReviewsTable(chosenWeapon.getTechnicalReviews());
+                            }
+                        });
+
+                    }
+                }catch(Exception e){
+                    System.out.println("Błąd");
+
+                }
+
             }
         });
     }
 
-    public static void main(String [] args){
+    private void populateTechnicalReviewsTable(List<TechnicalReview> technicalReviewList){
+        technicalReviewTableView.setItems(FXCollections.observableList(technicalReviewList));
 
-                Main main = new Main();
-        main.addExamples();
-    launch(args);
+        reviewDate = new TableColumn<>("Data przeglądu technicznego");
+        reviewDate.setCellValueFactory(new PropertyValueFactory<TechnicalReview,LocalDate>("reviewDate"));
+
+        nextReviewDate = new TableColumn<>("Data następnego przeglądu technicznego");
+        nextReviewDate.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<TechnicalReview, LocalDate>, ObservableValue<LocalDate>>() {
+            @Override
+            public ObservableValue<LocalDate> call(TableColumn.CellDataFeatures<TechnicalReview, LocalDate> param) {
+                return new SimpleObjectProperty<>(param.getValue().getNextReviewDate());
+            }
+        });
+
+        faults = new TableColumn<>("Usterki");
+        faults.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<TechnicalReview, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<TechnicalReview, String> param) {
+                if(param.getValue().getFaults() == null || param.getValue().getFaults().size() == 0){
+                    return new SimpleObjectProperty<>("Brak usterek");
+                }
+
+                String faults = "";
+                boolean isFirstFault = true;
+                for(String fault : param.getValue().getFaults()){
+                    if(!isFirstFault){
+                        fault += ",";
+                    }
+                    isFirstFault = false;
+                    faults += fault;
+                }
+                return new SimpleObjectProperty<>(faults);
+            }
+        });
+
+        comment = new TableColumn<>("Komentarz");
+        comment.setCellValueFactory(new PropertyValueFactory<TechnicalReview, String>("comment"));
+
+        reviewDate.prefWidthProperty().bind(technicalReviewTableView.widthProperty().multiply(0.25));
+        nextReviewDate.prefWidthProperty().bind(technicalReviewTableView.widthProperty().multiply(0.35));
+        faults.prefWidthProperty().bind(technicalReviewTableView.widthProperty().multiply(0.2));
+        comment.prefWidthProperty().bind(technicalReviewTableView.widthProperty().multiply(0.2));
+
+        technicalReviewTableView.getColumns().setAll(reviewDate, nextReviewDate, faults, comment);
+
+    }
+
+    private void populateWeaponOvershootsTable(List<WeaponOvershoot> weaponOvershootList){
+        weaponOvershootTableView.setItems(FXCollections.observableList(weaponOvershootList));
+
+        overshootDate = new TableColumn<>("Data przystrzelenia");
+        overshootDate.setCellValueFactory(new PropertyValueFactory<WeaponOvershoot,LocalDate>("overshootDate"));
+
+        nextOvershootDate = new TableColumn<>("Data następnego przystrzelenia");
+        nextOvershootDate.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<WeaponOvershoot, LocalDate>, ObservableValue<LocalDate>>() {
+            @Override
+            public ObservableValue<LocalDate> call(TableColumn.CellDataFeatures<WeaponOvershoot, LocalDate> param) {
+                return new SimpleObjectProperty<>(param.getValue().getNextOvershootDate());
+            }
+        });
+
+        overshootResult = new TableColumn<>("Wynik przystrzelenia");
+        overshootResult.setCellValueFactory(new PropertyValueFactory<WeaponOvershoot, WeaponOvershoot.overshoot_Result>("overshootResult"));
+
+        comment2 = new TableColumn<>("Komentarz");
+        comment2.setCellValueFactory(new PropertyValueFactory<WeaponOvershoot, String>("comment"));
+
+        overshootDate.prefWidthProperty().bind(weaponOvershootTableView.widthProperty().multiply(0.25));
+        nextOvershootDate.prefWidthProperty().bind(weaponOvershootTableView.widthProperty().multiply(0.35));
+        overshootResult.prefWidthProperty().bind(weaponOvershootTableView.widthProperty().multiply(0.2));
+        comment2.prefWidthProperty().bind(weaponOvershootTableView.widthProperty().multiply(0.2));
+
+        weaponOvershootTableView.getColumns().setAll(overshootDate, nextOvershootDate, overshootResult, comment2);
+
     }
 
 
+
+
+
+
     private void addExamples(){
-        weaponController.addWeapon(new ShortWeapon("Glock", 9.0, 10.0,"gładka",Weapon.weapon_Condition.SPRAWNA,50));
+        technicalReviewController.addTechnicalReview(new TechnicalReview(LocalDate.parse("2020-12-22")));
+        technicalReviewController.addTechnicalReview(new TechnicalReview(LocalDate.parse("2020-12-21")));
+        technicalReviewController.getAllTechnicalReviews().forEach(x -> System.out.println(x));
+
+        weaponOvershootController.addWeaponOvershoot(new WeaponOvershoot(LocalDate.parse("2020-12-20")));
+        weaponOvershootController.getAllWeaponOvershoots().forEach(x -> System.out.println(x));
+
+        TechnicalReview technicalReview1 = new TechnicalReview(LocalDate.parse("2020-12-19"));
+        technicalReview1.setComment("Trzeba wyczyścić");
+        List<String> lista = new ArrayList<>();
+        lista.add("A");
+        lista.add("B");
+        technicalReview1.setFaults(lista);
+
+        WeaponOvershoot weaponOvershoot1 = new WeaponOvershoot(LocalDate.parse("2020-12-21"));
+
+
+
+        ShortWeapon shortWeapon = new ShortWeapon("Glock", 8.0, 8.0,"gładka",Weapon.weapon_Condition.SPRAWNA,10);
+        shortWeapon.addTechnicalReview(technicalReview1);
+        shortWeapon.addWeaponOvershoot(weaponOvershoot1);
+        weaponController.addWeapon(shortWeapon);
+        shortWeapon.getTechnicalReviews().forEach(x -> System.out.println(x));
+        shortWeapon.getWeaponOvershoots().forEach(x -> System.out.println(x));
     }
 }
