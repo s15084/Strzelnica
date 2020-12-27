@@ -2,7 +2,6 @@ package model;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.annotation.processing.Generated;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;

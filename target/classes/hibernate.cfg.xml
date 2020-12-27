@@ -35,6 +35,11 @@
         <mapping class="model.TechnicalReview"/>
         <mapping class="model.Weapon"/>
         <mapping class="model.WeaponOvershoot"/>
+        <mapping class="model.Person"/>
+        <mapping class="model.Client"/>
+        <mapping class="model.Instructor"/>
+        <mapping class="model.Ticket"/>
+
 
 
     </session-factory>

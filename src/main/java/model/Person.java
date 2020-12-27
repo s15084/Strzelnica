@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity(name = "Person")
+    @Entity(name = "Person")
     @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
     public abstract class Person {
 
@@ -22,20 +22,6 @@ import java.util.List;
     private int phoneNumber;
 
 
-    //asocjacje
-    @OneToMany(
-            targetEntity = Client.class,
-            mappedBy = "person",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
-    private List<Client> clients = new ArrayList<>();
-
-    @OneToMany(
-            targetEntity = Instructor.class,
-            mappedBy = "person",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
-    private List<Instructor> instructors = new ArrayList<>();
 
 
     public Person() {

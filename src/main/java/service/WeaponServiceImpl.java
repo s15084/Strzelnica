@@ -26,6 +26,11 @@ public class WeaponServiceImpl implements WeaponService {
     }
 
     @Override
+    public void loadWeaponOvershoots(Weapon weapon) {
+        weaponDAO.loadWeaponOvershoots(weapon);
+    }
+
+    @Override
     public void updateWeapon(Weapon weapon) {
         weaponDAO.updateWeapon(weapon);
     }

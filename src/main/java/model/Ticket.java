@@ -18,5 +18,41 @@ public abstract class Ticket {
     private int ammoQuantity;
 
 
+    public Ticket() {
+    }
 
+
+    public long getTicketNumber() {
+        return ticketNumber;
+    }
+
+    public void setTicketNumber(long ticketNumber) {
+        this.ticketNumber = ticketNumber;
+    }
+
+    public static double getDeposit() {
+        return deposit;
+    }
+
+    public static void setDeposit(double deposit) {
+        Ticket.deposit = deposit;
+    }
+
+    public static double getAmmoPieceCost() {
+        return ammoPieceCost;
+    }
+
+    public static void setAmmoPieceCost(double ammoPieceCost) {
+        Ticket.ammoPieceCost = ammoPieceCost;
+    }
+
+    public int getAmmoQuantity() {
+        return ammoQuantity;
+    }
+
+    public void setAmmoQuantity(int ammoQuantity) {
+        this.ammoQuantity = ammoQuantity;
+    }
+
+    abstract int calculateTicketPrice();
 }

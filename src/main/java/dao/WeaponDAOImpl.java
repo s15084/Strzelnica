@@ -47,6 +47,16 @@ public class WeaponDAOImpl implements WeaponDAO{
     }
 
     @Override
+    public void loadWeaponOvershoots(Weapon weapon) {
+        Session session = HibernateUtil.openSession();
+        session.beginTransaction();
+        Hibernate.initialize(weapon.getWeaponOvershoots());
+        session.getTransaction().commit();
+        session.close();
+    }
+
+
+    @Override
     public void updateWeapon(Weapon weapon) {
         Session session = HibernateUtil.openSession();
         session.beginTransaction();

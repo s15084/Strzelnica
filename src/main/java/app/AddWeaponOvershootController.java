@@ -46,6 +46,8 @@ public class AddWeaponOvershootController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         overshootCommentTextArea.setWrapText(true);
+        resultsList = FXCollections.observableArrayList();
+        overshootResultComboBox.setItems(resultsList);
         addListener();
     }
 
@@ -66,6 +68,7 @@ public class AddWeaponOvershootController implements Initializable {
 
                     WeaponOvershoot weaponOvershoot = new WeaponOvershoot(overshootDate);
                     weaponOvershoot.setComment(comment);
+                    weaponOvershoot.getOvershootResult(resultsList);
                     weaponOvershoot.setWeapon(weapon);
 
                     weaponController.updateWeapon(weapon);

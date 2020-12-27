@@ -28,6 +28,10 @@ public class Main extends Application {
     @FXML
     private ListView<Weapon> weaponsListView;
 
+    //lista osób
+    @FXML
+    private ListView<Person> personsListView;
+
     //tabela przeglądów technicznych
     @FXML
     private TableView<TechnicalReview> technicalReviewTableView;
@@ -64,6 +68,7 @@ public class Main extends Application {
 
     //kontrolery
     private WeaponController weaponController = new WeaponController();
+    private PersonController personController = new PersonController();
     private TechnicalReviewController technicalReviewController = new TechnicalReviewController();
     private WeaponOvershootController weaponOvershootController = new WeaponOvershootController();
 
@@ -84,6 +89,7 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root));
 
         populateWeaponsListView();
+        populatePersonsListView();
         addListeners();
 
         primaryStage.show();
@@ -111,6 +117,24 @@ public class Main extends Application {
         });
     }
 
+    private void populatePersonsListView(){
+        personsListView.setItems(personController.getAllPersons());
+        personsListView.setCellFactory(param -> new ListCell<Person>(){
+            @Override
+            protected void updateItem(Person item, boolean empty){
+                super.updateItem(item, empty);
+
+                if(!empty || item!=null){
+                    if(item instanceof Client){
+                        setText("Klient | " + item.getLastName() + ", " + item.getFirstName());
+                    }
+                    else if(item instanceof Instructor) {
+                        setText("Instruktor" + item.getLastName() + ", " + item.getFirstName());
+                    }
+                }
+            }
+        });
+    }
     private void addListeners(){
 
         weaponsListView.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -122,6 +146,12 @@ public class Main extends Application {
                             .getSelectedItem();
                     populateTechnicalReviewsTable(selectedWeapon.getTechnicalReviews());
                     populateWeaponOvershootsTable(selectedWeapon.getWeaponOvershoots());
+                }
+                else if(event.getClickCount() ==2 && personsListView.getSelectionModel().getSelectedItem() != null){
+                    Person selectedPerson = personsListView
+                            .getSelectionModel()
+                            .getSelectedItem();
+                    /* ....*/
                 }
             }
         });
@@ -161,6 +191,8 @@ public class Main extends Application {
 
             }
         });
+
+        //TODO dodać obsługę enum - wynik przystrzelenia
 
         newWeaponOvershootButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -282,6 +314,8 @@ public class Main extends Application {
 
     private void addExamples(){
         ShortWeapon shortWeapon = new ShortWeapon(58473847,"Glock", 8.0, 8.0,"gładka",Weapon.weapon_Condition.SPRAWNA,10);
+        Client client = new Client("Walter", "White", LocalDate.parse("1965-01-01") ,123456789,6859586,"walter@white.com");
         weaponController.addWeapon(shortWeapon);
+        personController.addPerson(client);
     }
 }

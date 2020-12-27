@@ -9,6 +9,7 @@ public interface WeaponService {
     void addWeapon(Weapon weapon);
     List<Weapon> getAllWeapons();
     void loadWeaponTechnicalReview(Weapon weapon);
+    void loadWeaponOvershoots(Weapon weapon);
     void updateWeapon(Weapon weapon);
     void removeWeapon(Long id);
 }
