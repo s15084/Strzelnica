@@ -63,7 +63,7 @@ public class AddWeaponOvershootController implements Initializable {
                 LocalDate overshootDate = overshootDatePicker.getValue();
 
                 if(overshootDate == null){
-                    System.out.println("Wypełnij wszystkie dane");
+                    newAlertMessage("Error","Wypełnij wszystkie dane");
                 }else{
 
                     WeaponOvershoot weaponOvershoot = new WeaponOvershoot(overshootDate);
@@ -77,5 +77,13 @@ public class AddWeaponOvershootController implements Initializable {
                 }
             }
         });
+    }
+
+    private void newAlertMessage(String header,String text){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(header);
+        alert.setHeaderText(null);
+        alert.setContentText(text);
+        alert.showAndWait();
     }
 }

@@ -22,6 +22,8 @@ public abstract class Ticket {
     }
 
 
+
+
     public long getTicketNumber() {
         return ticketNumber;
     }

@@ -161,7 +161,7 @@ public class Main extends Application {
             public void handle(MouseEvent event) {
                 try {
                     if(weaponsListView.getSelectionModel().getSelectedItem() == null){
-                        System.out.println("Wybierz broń z listy");
+                        newAlertMessage("Error","Wybierz broń z listy");
                     }else {
                         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("addReview.fxml"));
                         Parent root1 = (Parent) fxmlLoader.load();
@@ -199,7 +199,7 @@ public class Main extends Application {
             public void handle(MouseEvent event) {
                 try {
                     if(weaponsListView.getSelectionModel().getSelectedItem() == null){
-                        System.out.println("Wybierz broń z listy");
+                        newAlertMessage("Error","Wybierz broń z listy");
                     }else {
                         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("addOvershoot.fxml"));
                         Parent root2 = (Parent) fxmlLoader.load();
@@ -309,7 +309,13 @@ public class Main extends Application {
 
 
 
-
+    private void newAlertMessage(String header,String text){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(header);
+        alert.setHeaderText(null);
+        alert.setContentText(text);
+        alert.showAndWait();
+    }
 
 
     private void addExamples(){

@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import model.TechnicalReview;
 import model.Weapon;
 
+
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
@@ -70,7 +71,7 @@ public class AddTechnicalReviewController implements Initializable {
                 LocalDate reviewDate = reviewDatePicker.getValue();
 
                 if(reviewDate == null){
-                    System.out.println("Wypełnij wszystkie dane");
+                    newAlertMessage("Error","Wypełnij wszystkie dane");
                 }else{
 
                     TechnicalReview technicalReview = new TechnicalReview(reviewDate);
@@ -96,8 +97,12 @@ public class AddTechnicalReviewController implements Initializable {
         });
     }
 
-
-
-
+    private void newAlertMessage(String header,String text){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(header);
+        alert.setHeaderText(null);
+        alert.setContentText(text);
+        alert.showAndWait();
+    }
 
 }
