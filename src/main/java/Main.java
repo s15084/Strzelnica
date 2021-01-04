@@ -266,10 +266,10 @@ public class Main extends Application {
         });
 
         overshootResult = new TableColumn<>("Wynik przystrzelenia");
-        //overshootResult.setCellValueFactory(new PropertyValueFactory<WeaponOvershoot, WeaponOvershoot.overshoot_Result>("overshootResult"));
-        overshootResult.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<WeaponOvershoot, WeaponOvershoot.overshoot_Result>, ObservableValue<WeaponOvershoot.overshoot_Result>>() {
+//        overshootResult.setCellValueFactory(new PropertyValueFactory<WeaponOvershoot, WeaponOvershoot.overshoot_Result>("overshootResult"));
+        overshootResult.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<WeaponOvershoot, String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<WeaponOvershoot.overshoot_Result> call(TableColumn.CellDataFeatures<WeaponOvershoot, WeaponOvershoot.overshoot_Result> param) {
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<WeaponOvershoot, String> param) {
                 return new SimpleObjectProperty<>(param.getValue().getOvershootResult().toString());
             }
         });
