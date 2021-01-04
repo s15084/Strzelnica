@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Callback;
@@ -28,9 +29,6 @@ public class Main extends Application {
     @FXML
     private ListView<Weapon> weaponsListView;
 
-    //lista osób
-    @FXML
-    private ListView<Person> personsListView;
 
     //tabela przeglądów technicznych
     @FXML
@@ -45,6 +43,7 @@ public class Main extends Application {
     private TableColumn<TechnicalReview, String> comment;
 
 
+
     //tabela przystrzeleń
     @FXML
     private TableView<WeaponOvershoot> weaponOvershootTableView;
@@ -53,7 +52,7 @@ public class Main extends Application {
     @FXML
     private TableColumn<WeaponOvershoot, LocalDate> nextOvershootDate;
     @FXML
-    private TableColumn<WeaponOvershoot, WeaponOvershoot.overshoot_Result> overshootResult;
+    private TableColumn<WeaponOvershoot, String> overshootResult;
     @FXML
     private TableColumn<WeaponOvershoot, String> comment2;
 
@@ -68,7 +67,6 @@ public class Main extends Application {
 
     //kontrolery
     private WeaponController weaponController = new WeaponController();
-    private PersonController personController = new PersonController();
     private TechnicalReviewController technicalReviewController = new TechnicalReviewController();
     private WeaponOvershootController weaponOvershootController = new WeaponOvershootController();
 
@@ -89,7 +87,6 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root));
 
         populateWeaponsListView();
-        populatePersonsListView();
         addListeners();
 
         primaryStage.show();
@@ -117,24 +114,7 @@ public class Main extends Application {
         });
     }
 
-    private void populatePersonsListView(){
-        personsListView.setItems(personController.getAllPersons());
-        personsListView.setCellFactory(param -> new ListCell<Person>(){
-            @Override
-            protected void updateItem(Person item, boolean empty){
-                super.updateItem(item, empty);
 
-                if(!empty || item!=null){
-                    if(item instanceof Client){
-                        setText("Klient | " + item.getLastName() + ", " + item.getFirstName());
-                    }
-                    else if(item instanceof Instructor) {
-                        setText("Instruktor" + item.getLastName() + ", " + item.getFirstName());
-                    }
-                }
-            }
-        });
-    }
     private void addListeners(){
 
         weaponsListView.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -146,12 +126,6 @@ public class Main extends Application {
                             .getSelectedItem();
                     populateTechnicalReviewsTable(selectedWeapon.getTechnicalReviews());
                     populateWeaponOvershootsTable(selectedWeapon.getWeaponOvershoots());
-                }
-                else if(event.getClickCount() ==2 && personsListView.getSelectionModel().getSelectedItem() != null){
-                    Person selectedPerson = personsListView
-                            .getSelectionModel()
-                            .getSelectedItem();
-                    /* ....*/
                 }
             }
         });
@@ -206,7 +180,6 @@ public class Main extends Application {
                         Weapon chosenWeapon = weaponsListView.getSelectionModel().getSelectedItem();
                         AddWeaponOvershootController addWeaponOvershootController = fxmlLoader.getController();
                         addWeaponOvershootController.setWeapon(chosenWeapon);
-
                         Stage stage = new Stage();
                         stage.setTitle("Nowe przystrzelenie");
                         stage.setScene(new Scene(root2));
@@ -293,7 +266,13 @@ public class Main extends Application {
         });
 
         overshootResult = new TableColumn<>("Wynik przystrzelenia");
-        overshootResult.setCellValueFactory(new PropertyValueFactory<WeaponOvershoot, WeaponOvershoot.overshoot_Result>("overshootResult"));
+//        overshootResult.setCellValueFactory(new PropertyValueFactory<WeaponOvershoot, WeaponOvershoot.overshoot_Result>("overshootResult"));
+        overshootResult.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<WeaponOvershoot, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<WeaponOvershoot, String> param) {
+                return new SimpleObjectProperty<>(param.getValue().getOvershootResult().toString());
+            }
+        });
 
         comment2 = new TableColumn<>("Komentarz");
         comment2.setCellValueFactory(new PropertyValueFactory<WeaponOvershoot, String>("comment"));
@@ -307,9 +286,15 @@ public class Main extends Application {
 
     }
 
+    public TableColumn<WeaponOvershoot, String> getOvershootResult() {
+        return overshootResult;
+    }
 
+    public void setOvershootResult(TableColumn<WeaponOvershoot, String> overshootResult) {
+        this.overshootResult = overshootResult;
+    }
 
-    private void newAlertMessage(String header,String text){
+    private void newAlertMessage(String header, String text){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(header);
         alert.setHeaderText(null);
@@ -322,6 +307,6 @@ public class Main extends Application {
         ShortWeapon shortWeapon = new ShortWeapon(58473847,"Glock", 8.0, 8.0,"gładka",Weapon.weapon_Condition.SPRAWNA,10);
         Client client = new Client("Walter", "White", LocalDate.parse("1965-01-01") ,123456789,6859586,"walter@white.com");
         weaponController.addWeapon(shortWeapon);
-        personController.addPerson(client);
+        System.out.println(client);
     }
 }

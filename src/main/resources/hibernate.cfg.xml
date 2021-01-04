@@ -39,6 +39,9 @@
         <mapping class="model.Client"/>
         <mapping class="model.Instructor"/>
         <mapping class="model.Ticket"/>
+        <mapping class="model.TicketPurchase"/>
+        <mapping class="model.WeaponRental"/>
+
 
 
 

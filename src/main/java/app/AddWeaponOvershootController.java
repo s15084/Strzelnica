@@ -22,6 +22,8 @@ public class AddWeaponOvershootController implements Initializable {
     private Weapon weapon;
     private ObservableList<String> resultsList;
 
+    private final String RESULT_POSITIVE = "Pozytywny";
+    private final String RESULT_NEGATIVE = "Negatywny";
 
     @FXML
     private TextArea overshootCommentTextArea;
@@ -47,7 +49,10 @@ public class AddWeaponOvershootController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         overshootCommentTextArea.setWrapText(true);
         resultsList = FXCollections.observableArrayList();
-        overshootResultComboBox.setItems(resultsList);
+
+        overshootResultComboBox.getItems().add(RESULT_POSITIVE);
+        overshootResultComboBox.getItems().add(RESULT_NEGATIVE);
+
         addListener();
     }
 
@@ -62,14 +67,25 @@ public class AddWeaponOvershootController implements Initializable {
                 String comment = overshootCommentTextArea.getText().trim();
                 LocalDate overshootDate = overshootDatePicker.getValue();
 
-                if(overshootDate == null){
+                String selectedResult = overshootResultComboBox.getSelectionModel().getSelectedItem();
+
+                if(overshootDate == null || selectedResult == null){
                     newAlertMessage("Error","Wypełnij wszystkie dane");
+
                 }else{
 
                     WeaponOvershoot weaponOvershoot = new WeaponOvershoot(overshootDate);
                     weaponOvershoot.setComment(comment);
-                    weaponOvershoot.getOvershootResult(resultsList);
+                    weaponOvershoot.getOvershootResult();
                     weaponOvershoot.setWeapon(weapon);
+
+                    if(selectedResult.equals(RESULT_POSITIVE)){
+                        weaponOvershoot.setOvershootResult(WeaponOvershoot.overshoot_Result.POZYTYWNY);
+                    }
+                    else if(weaponOvershoot.equals(RESULT_NEGATIVE)){
+                        weaponOvershoot.setOvershootResult(WeaponOvershoot.overshoot_Result.NEGATYWNY);
+                    }
+
 
                     weaponController.updateWeapon(weapon);
                     Stage stage = (Stage)overshootAddButton.getScene().getWindow();

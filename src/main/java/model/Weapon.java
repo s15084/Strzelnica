@@ -15,7 +15,7 @@ public abstract class Weapon {
     @GenericGenerator(name = "increment", strategy = "increment")
     private long id;
 
-    private int serialNumber;
+    private long serialNumber;
     private String name;
     private double caliber;
     private double barrelLength;
@@ -97,7 +97,7 @@ public abstract class Weapon {
         this.id = id;
     }
 
-    public int getSerialNumber() {
+    public long getSerialNumber() {
         return serialNumber;
     }
 

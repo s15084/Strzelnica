@@ -42,7 +42,7 @@ public class WeaponOvershoot {
         this.overshootDate = overshootDate;
     }
 
-    public overshoot_Result getOvershootResult(ObservableList<String> overshootPickedResult) {
+    public overshoot_Result getOvershootResult() {
         return overshootResult;
     }
 
