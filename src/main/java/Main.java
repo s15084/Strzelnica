@@ -266,10 +266,10 @@ public class Main extends Application {
         });
 
         overshootResult = new TableColumn<>("Wynik przystrzelenia");
-//        overshootResult.setCellValueFactory(new PropertyValueFactory<WeaponOvershoot, WeaponOvershoot.overshoot_Result>("overshootResult"));
-        overshootResult.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<WeaponOvershoot, String>, ObservableValue<String>>() {
+        //overshootResult.setCellValueFactory(new PropertyValueFactory<WeaponOvershoot, WeaponOvershoot.overshoot_Result>("overshootResult"));
+        overshootResult.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<WeaponOvershoot, WeaponOvershoot.overshoot_Result>, ObservableValue<WeaponOvershoot.overshoot_Result>>() {
             @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<WeaponOvershoot, String> param) {
+            public ObservableValue<WeaponOvershoot.overshoot_Result> call(TableColumn.CellDataFeatures<WeaponOvershoot, WeaponOvershoot.overshoot_Result> param) {
                 return new SimpleObjectProperty<>(param.getValue().getOvershootResult().toString());
             }
         });
@@ -286,15 +286,9 @@ public class Main extends Application {
 
     }
 
-    public TableColumn<WeaponOvershoot, String> getOvershootResult() {
-        return overshootResult;
-    }
 
-    public void setOvershootResult(TableColumn<WeaponOvershoot, String> overshootResult) {
-        this.overshootResult = overshootResult;
-    }
 
-    private void newAlertMessage(String header, String text){
+    private void newAlertMessage(String header,String text){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(header);
         alert.setHeaderText(null);
