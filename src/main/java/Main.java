@@ -104,10 +104,10 @@ public class Main extends Application {
                         setText("Broń krótka | " + item.getName() + " | SN: " + item.getSerialNumber());
                     }
                     else if(item instanceof MachineWeapon){
-                        setText("Broń maszynowa " +item.getCaliber() + " mm | " +((MachineWeapon)item).getClipCapacity() + " " + item.getWeaponCondition());
+                        setText("Broń maszynowa | " + item.getName() + " | SN: " + item.getSerialNumber());
                     }
                     else if(item instanceof FlatBarrelWeapon){
-                        setText("Broń płasko-lufowa " +item.getCaliber() + " mm | " +((FlatBarrelWeapon)item).isDoubleBarreled() + " " + item.getWeaponCondition());
+                        setText("Broń płasko-lufowa | " + item.getName() + " | SN: " + item.getSerialNumber());
                     }
                 }
             }
@@ -298,9 +298,16 @@ public class Main extends Application {
 
 
     private void addExamples(){
-        ShortWeapon shortWeapon = new ShortWeapon(58473847,"Glock", 8.0, 8.0,"gładka",Weapon.weapon_Condition.SPRAWNA,10);
-        Client client = new Client("Walter", "White", LocalDate.parse("1965-01-01") ,123456789,6859586,"walter@white.com");
-        weaponController.addWeapon(shortWeapon);
-        System.out.println(client);
+        ShortWeapon shortWeapon1 = new ShortWeapon(58473847,"Glock", 8.0, 8.0,"gładka",Weapon.weapon_Condition.SPRAWNA,10);
+        ShortWeapon shortWeapon2 = new ShortWeapon(78443347,"Desert Eagle", 9.0, 12.0,"gładka",Weapon.weapon_Condition.SPRAWNA,7);
+        FlatBarrelWeapon flatBarrelWeapon1 = new FlatBarrelWeapon(12345434,"Kniejówka", 3.5, 14.0, "śrut", Weapon.weapon_Condition.SPRAWNA, false);
+        MachineWeapon machineWeapon1 = new MachineWeapon(58492303, "AK-47", 6.0, 22.5, "gładka", Weapon.weapon_Condition.SPRAWNA, 30);
+        weaponController.addWeapon(shortWeapon1);
+        weaponController.addWeapon(shortWeapon2);
+        weaponController.addWeapon(flatBarrelWeapon1);
+        weaponController.addWeapon(machineWeapon1);
+
+        //Client client = new Client("Walter", "White", LocalDate.parse("1965-01-01") ,123456789,6859586,"walter@white.com");
+
     }
 }

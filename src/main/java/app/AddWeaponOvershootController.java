@@ -82,7 +82,7 @@ public class AddWeaponOvershootController implements Initializable {
                     if(selectedResult.equals(RESULT_POSITIVE)){
                         weaponOvershoot.setOvershootResult(WeaponOvershoot.overshoot_Result.POZYTYWNY);
                     }
-                    else if(weaponOvershoot.equals(RESULT_NEGATIVE)){
+                    else if(selectedResult.equals(RESULT_NEGATIVE)){
                         weaponOvershoot.setOvershootResult(WeaponOvershoot.overshoot_Result.NEGATYWNY);
                     }
 
